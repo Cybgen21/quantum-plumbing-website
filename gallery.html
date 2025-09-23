@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Quantum Plumbing & Gas | Our Work in Staffordshire</title>
+    <meta name="description" content="View our gallery showcasing quality plumbing and gas work across Staffordshire. See examples of our professional installations, repairs, and projects.">
+    <link rel="canonical" href="https://quantumplumbing.co.uk/gallery">
+    
+    <!-- Stylesheets -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" href="favicon.ico">
+    
+    <style>
+        /* Gallery-specific styles */
+        .gallery-container {
+            padding: 100px 0;
+            background: var(--white);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 50px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            background: #f0f0f0;
+        }
+        
+        .gallery-item img.loading {
+            opacity: 0.3;
+            filter: blur(2px);
+        }
+        
+        .gallery-item img.loaded {
+            opacity: 1;
+            filter: none;
+        }
+        
+        .gallery-placeholder {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,51,102,0.8), rgba(0,51,102,0.6));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .gallery-overlay i {
+            font-size: 2rem;
+            color: var(--white);
+        }
+        
+        .video-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.7);
+            color: var(--white);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 15px;
+            }
+            
+            .gallery-item img {
+                height: 200px;
+            }
+            
+            .gallery-placeholder {
+                height: 200px;
+                font-size: 0.8rem;
+            }
+            
+            .lightbox-nav {
+                font-size: 1.5rem;
+                padding: 10px;
+            }
+            
+            .filter-buttons {
+                gap: 10px;
+                margin-bottom: 30px;
+            }
+            
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+            
+            .gallery-item img {
+                height: 150px;
+            }
+            
+            .gallery-placeholder {
+                height: 150px;
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Performance optimizations */
+        .gallery-item {
+            will-change: transform;
+        }
+        
+        .gallery-item img {
+            will-change: opacity, filter;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="logo-icon">
+                    <img src="2-3.png" alt="Quantum Plumbing & Gas Icon" style="width: 60px; height: 60px; object-fit: contain;">
+                </div>
+                <div class="logo-text">
+                    <img src="4.png" alt="Quantum Plumbing & Gas" style="height: 45px; object-fit: contain;">
+                </div>
+            </a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-cta-container">
+                    <a href="tel:+447594277052" class="nav-cta">
+                        <i class="fas fa-phone"></i>
+                        <span>Emergency: 07594 277052</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="page-header-background">
+            <div class="header-gradient"></div>
+            <div class="header-pattern"></div>
+        </div>
+        <div class="container">
+            <div class="page-header-content">
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Gallery</span>
+                </div>
+                <h1>Our Work Gallery</h1>
+                <p>Showcasing our quality plumbing and gas work across Staffordshire</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-container">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Our Projects</div>
+                <h2>Quality Work in Action</h2>
+                <p>Browse through examples of our professional installations, repairs, and projects</p>
+            </div>
+            
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Work</button>
+                <button class="filter-btn" data-filter="images">Photos</button>
+                <button class="filter-btn" data-filter="videos">Videos</button>
+            </div>
+            
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Images -->
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0000.jpg" data-lightbox="gallery" data-title="Plumbing Work Example">
+                        <img data-src="Gallary/IMG-20250922-WA0000.jpg" alt="Plumbing Work Example" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0001.jpg" data-lightbox="gallery" data-title="Gas Installation">
+                        <img data-src="Gallary/IMG-20250922-WA0001.jpg" alt="Gas Installation" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0002.jpg" data-lightbox="gallery" data-title="Boiler Service">
+                        <img data-src="Gallary/IMG-20250922-WA0002.jpg" alt="Boiler Service" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0003.jpg" data-lightbox="gallery" data-title="Bathroom Installation">
+                        <img data-src="Gallary/IMG-20250922-WA0003.jpg" alt="Bathroom Installation" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0004.jpg" data-lightbox="gallery" data-title="Pipe Repair">
+                        <img data-src="Gallary/IMG-20250922-WA0004.jpg" alt="Pipe Repair" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0005.jpg" data-lightbox="gallery" data-title="Kitchen Plumbing">
+                        <img data-src="Gallary/IMG-20250922-WA0005.jpg" alt="Kitchen Plumbing" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0006.jpg" data-lightbox="gallery" data-title="Heating System">
+                        <img data-src="Gallary/IMG-20250922-WA0006.jpg" alt="Heating System" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0007.jpg" data-lightbox="gallery" data-title="Gas Safety Check">
+                        <img data-src="Gallary/IMG-20250922-WA0007.jpg" alt="Gas Safety Check" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0008.jpg" data-lightbox="gallery" data-title="Plumbing Installation">
+                        <img data-src="Gallary/IMG-20250922-WA0008.jpg" alt="Plumbing Installation" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0009.jpg" data-lightbox="gallery" data-title="Boiler Installation">
+                        <img data-src="Gallary/IMG-20250922-WA0009.jpg" alt="Boiler Installation" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0010.jpg" data-lightbox="gallery" data-title="Emergency Repair">
+                        <img data-src="Gallary/IMG-20250922-WA0010.jpg" alt="Emergency Repair" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0011.jpg" data-lightbox="gallery" data-title="Commercial Work">
+                        <img data-src="Gallary/IMG-20250922-WA0011.jpg" alt="Commercial Work" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0012.jpg" data-lightbox="gallery" data-title="Residential Plumbing">
+                        <img data-src="Gallary/IMG-20250922-WA0012.jpg" alt="Residential Plumbing" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0013.jpg" data-lightbox="gallery" data-title="Gas Fitting">
+                        <img data-src="Gallary/IMG-20250922-WA0013.jpg" alt="Gas Fitting" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0014.jpg" data-lightbox="gallery" data-title="Professional Installation">
+                        <img data-src="Gallary/IMG-20250922-WA0014.jpg" alt="Professional Installation" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0015.jpg" data-lightbox="gallery" data-title="Quality Workmanship">
+                        <img data-src="Gallary/IMG-20250922-WA0015.jpg" alt="Quality Workmanship" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0016.jpg" data-lightbox="gallery" data-title="Plumbing Solution">
+                        <img data-src="Gallary/IMG-20250922-WA0016.jpg" alt="Plumbing Solution" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0019.jpg" data-lightbox="gallery" data-title="Expert Work">
+                        <img data-src="Gallary/IMG-20250922-WA0019.jpg" alt="Expert Work" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0020.jpg" data-lightbox="gallery" data-title="Professional Service">
+                        <img data-src="Gallary/IMG-20250922-WA0020.jpg" alt="Professional Service" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0021.jpg" data-lightbox="gallery" data-title="Gas Safe Work">
+                        <img data-src="Gallary/IMG-20250922-WA0021.jpg" alt="Gas Safe Work" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0022.jpg" data-lightbox="gallery" data-title="Reliable Service">
+                        <img data-src="Gallary/IMG-20250922-WA0022.jpg" alt="Reliable Service" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0023.jpg" data-lightbox="gallery" data-title="Staffordshire Plumber">
+                        <img data-src="Gallary/IMG-20250922-WA0023.jpg" alt="Staffordshire Plumber" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0024.jpg" data-lightbox="gallery" data-title="Local Plumbing">
+                        <img data-src="Gallary/IMG-20250922-WA0024.jpg" alt="Local Plumbing" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0025.jpg" data-lightbox="gallery" data-title="Quality Installation">
+                        <img data-src="Gallary/IMG-20250922-WA0025.jpg" alt="Quality Installation" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0026.jpg" data-lightbox="gallery" data-title="Professional Repair">
+                        <img data-src="Gallary/IMG-20250922-WA0026.jpg" alt="Professional Repair" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0027.jpg" data-lightbox="gallery" data-title="Gas Installation Work">
+                        <img data-src="Gallary/IMG-20250922-WA0027.jpg" alt="Gas Installation Work" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0028.jpg" data-lightbox="gallery" data-title="Plumbing Excellence">
+                        <img data-src="Gallary/IMG-20250922-WA0028.jpg" alt="Plumbing Excellence" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0029.jpg" data-lightbox="gallery" data-title="Expert Installation">
+                        <img data-src="Gallary/IMG-20250922-WA0029.jpg" alt="Expert Installation" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0030.jpg" data-lightbox="gallery" data-title="Professional Standards">
+                        <img data-src="Gallary/IMG-20250922-WA0030.jpg" alt="Professional Standards" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0031.jpg" data-lightbox="gallery" data-title="Quality Service">
+                        <img data-src="Gallary/IMG-20250922-WA0031.jpg" alt="Quality Service" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                                <div class="gallery-item" data-type="images">
+                    <a href="Gallary/IMG-20250922-WA0032.jpg" data-lightbox="gallery" data-title="Trusted Plumber">
+                        <img data-src="Gallary/IMG-20250922-WA0032.jpg" alt="Trusted Plumber" class="lazy-load loading">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Videos -->
+                <div class="gallery-item" data-type="videos" data-src="Gallary/VID-20250922-WA0018.mp4">
+                    <video muted>
+                        <source src="Gallary/VID-20250922-WA0018.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-indicator">
+                        <i class="fas fa-play"></i> Video
+                    </div>
+                    <div class="gallery-overlay">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-type="videos" data-src="Gallary/VID-20250922-WA0033.mp4">
+                    <video muted>
+                        <source src="Gallary/VID-20250922-WA0033.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-indicator">
+                        <i class="fas fa-play"></i> Video
+                    </div>
+                    <div class="gallery-overlay">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <div class="cta-text">
+                    <h2>Ready for Quality Work?</h2>
+                    <p>Join our satisfied customers and experience the Quantum difference in plumbing and gas services.</p>
+                </div>
+                <div class="cta-actions">
+                    <a href="tel:+447594277052" class="btn btn-emergency btn-large">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>Emergency: 07594 277052</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section company">
+                    <div class="footer-logo">
+                        <h3 style="color: var(--white); font-size: 1.4rem; font-weight: 700; margin: 0; line-height: 1.2;">
+                            Quantum Plumbing & Gas
+                        </h3>
+                    </div>
+                     <p>Staffordshire's premier Gas Safe specialists delivering world-class plumbing solutions with unmatched expertise and reliability.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html">All Services</a></li>
+                        <li><a href="services.html">Boiler Repairs</a></li>
+                        <li><a href="services.html">Gas Safety</a></li>
+                        <li><a href="services.html">Plumbing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section contact">
+                    <h4>Contact Info</h4>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <strong>Emergency Line</strong>
+                            <a href="tel:+447594277052">07594 277052</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>Email</strong>
+                            <a href="mailto:qpgstaffordshire@gmail.com">qpgstaffordshire@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Service Area</strong>
+                            <span>Staffordshire</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2025 Quantum Plumbing & Gas. All rights reserved.</p>
+                    <div class="footer-badges">
+                        <span class="badge">Gas Safe Registered</span>
+                        <span class="badge">Fully Insured</span>
+                        <span class="badge">24/7 Service</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+    <script>
+        // Advanced Lazy Loading with Intersection Observer
+        class LazyImageLoader {
+            constructor() {
+                this.imageObserver = null;
+                this.loadedImages = new Set();
+                this.init();
+            }
+            
+            init() {
+                // Create intersection observer for better performance
+                if ('IntersectionObserver' in window) {
+                    this.imageObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                this.loadImage(entry.target);
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, {
+                        rootMargin: '50px 0px', // Start loading 50px before image comes into view
+                        threshold: 0.01
+                    });
+                    
+                    // Observe all lazy load images
+                    document.querySelectorAll('.lazy-load').forEach(img => {
+                        this.imageObserver.observe(img);
+                    });
+                } else {
+                    // Fallback for older browsers
+                    this.loadVisibleImages();
+                }
+                
+                // Load first few images immediately for better perceived performance
+                this.loadInitialImages();
+            }
+            
+            loadInitialImages() {
+                const initialImages = document.querySelectorAll('.lazy-load');
+                const loadCount = Math.min(6, initialImages.length); // Load first 6 images
+                
+                for (let i = 0; i < loadCount; i++) {
+                    const img = initialImages[i];
+                    if (img && img.dataset.src) {
+                        this.loadImage(img);
+                    }
+                }
+            }
+            
+            loadImage(img) {
+                if (this.loadedImages.has(img) || !img.dataset.src) return;
+                
+                this.loadedImages.add(img);
+                
+                // Create new image element to preload
+                const imageLoader = new Image();
+                
+                imageLoader.onload = () => {
+                    // Image loaded successfully
+                    img.src = img.dataset.src;
+                    img.classList.remove('loading');
+                    img.classList.add('loaded');
+                    
+                    // Add fade-in animation
+                    img.style.opacity = '0';
+                    img.style.transition = 'opacity 0.3s ease';
+                    setTimeout(() => {
+                        img.style.opacity = '1';
+                    }, 10);
+                };
+                
+                imageLoader.onerror = () => {
+                    // Handle image load error
+                    img.classList.remove('loading');
+                    img.classList.add('error');
+                    img.alt = 'Image failed to load';
+                    console.warn('Failed to load image:', img.dataset.src);
+                };
+                
+                // Start loading the image
+                imageLoader.src = img.dataset.src;
+            }
+            
+            loadVisibleImages() {
+                // Fallback method for browsers without IntersectionObserver
+                const images = document.querySelectorAll('.lazy-load');
+                images.forEach(img => {
+                    if (this.isInViewport(img)) {
+                        this.loadImage(img);
+                    }
+                });
+            }
+            
+            isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+            }
+        }
+        
+        // Initialize lazy loading when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = new LazyImageLoader();
+            window.lazyLoader = loader; // Make it globally accessible for debugging
+            
+            // Debug: Check if images are being found
+            const lazyImages = document.querySelectorAll('.lazy-load');
+            console.log(`Found ${lazyImages.length} lazy load images`);
+        });
+        
+        // Filter functionality for gallery
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                
+                galleryItems.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-type') === filter) {
+                        item.style.display = 'block';
+                        
+                        // Load images that become visible after filtering
+                        const img = item.querySelector('.lazy-load');
+                        if (img && !img.src) {
+                            setTimeout(() => {
+                                if (window.lazyLoader) {
+                                    window.lazyLoader.loadImage(img);
+                                }
+                            }, 100);
+                        }
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Configure Lightbox2 for better mobile performance
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'showImageNumberLabel': false,
+            'alwaysShowNavOnTouchDevices': true,
+            'disableScrolling': false,
+            'fitImagesInViewport': true,
+            'maxWidth': '90%',
+            'maxHeight': '90%',
+            'positionFromTop': 50,
+            'showImageNumberLabel': true,
+            'albumLabel': "Image %1 of %2"
+        });
+        
+        // Optimize lightbox for mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            // Preload lightbox CSS and JS on user interaction
+            let lightboxPreloaded = false;
+            
+            function preloadLightbox() {
+                if (!lightboxPreloaded) {
+                    lightboxPreloaded = true;
+                    // Lightbox is already loaded, but we can optimize it for mobile
+                    if (window.innerWidth <= 768) {
+                        lightbox.option({
+                            'maxWidth': '95%',
+                            'maxHeight': '80%',
+                            'positionFromTop': 20
+                        });
+                    }
+                }
+            }
+            
+            // Preload on first touch/click
+            document.addEventListener('touchstart', preloadLightbox, { once: true });
+            document.addEventListener('click', preloadLightbox, { once: true });
+        });
+    </script>
+</body>
+</html>
