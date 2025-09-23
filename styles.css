@@ -938,15 +938,33 @@ body {
     .nav-menu.active { left: 0; }
     .hamburger { display: flex; }
     
+    /* Make logo slightly smaller on mobile and center properly */
+    .nav-logo .logo-icon img {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    
+    .nav-logo .logo-text img {
+        height: 40px !important;
+    }
+    
+    .nav-container {
+        justify-content: center !important;
+    }
+    
+    .nav-logo {
+        margin: 0 auto !important;
+    }
+    
     .hero-content {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 15px;
         text-align: center;
     }
     
     .hero-stats { flex-direction: column; gap: 30px; }
     .hero-main {
-        margin-bottom: 40px;
+        margin-bottom: 20px;
     }
     
     .whatsapp-widget {
@@ -2572,7 +2590,7 @@ body {
 
 /* Service Areas */
 .service-areas {
-    padding: 100px 0;
+    padding: 60px 0;
     background: var(--white);
 }
 

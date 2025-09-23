@@ -632,6 +632,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // ===== DYNAMIC COPYRIGHT YEAR =====
+    // Update copyright year automatically
+    const currentYearElement = document.getElementById('current-year');
+    if (currentYearElement) {
+        const currentYear = new Date().getFullYear();
+        currentYearElement.textContent = currentYear;
+    }
+    
 });
 
 // ===== UTILITY FUNCTIONS =====
