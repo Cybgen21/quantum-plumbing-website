@@ -54,6 +54,35 @@
             height: 250px;
             object-fit: cover;
             transition: transform 0.3s ease;
+            background: #f0f0f0;
+        }
+        
+        .gallery-item img.loading {
+            opacity: 0.3;
+            filter: blur(2px);
+        }
+        
+        .gallery-item img.loaded {
+            opacity: 1;
+            filter: none;
+        }
+        
+        .gallery-placeholder {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
         
         .gallery-item:hover img {
@@ -123,12 +152,17 @@
         
         @media (max-width: 768px) {
             .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
                 gap: 15px;
             }
             
             .gallery-item img {
                 height: 200px;
+            }
+            
+            .gallery-placeholder {
+                height: 200px;
+                font-size: 0.8rem;
             }
             
             .lightbox-nav {
@@ -138,12 +172,38 @@
             
             .filter-buttons {
                 gap: 10px;
+                margin-bottom: 30px;
             }
             
             .filter-btn {
                 padding: 8px 16px;
                 font-size: 0.9rem;
             }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+            
+            .gallery-item img {
+                height: 150px;
+            }
+            
+            .gallery-placeholder {
+                height: 150px;
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Performance optimizations */
+        .gallery-item {
+            will-change: transform;
+        }
+        
+        .gallery-item img {
+            will-change: opacity, filter;
         }
     </style>
 </head>
@@ -163,7 +223,7 @@
             <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="services.html" class="nav-link">Services</a></li>
-                <li><a href="about.html" class="nav-link active">Gallery</a></li>
+                <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
                 <li><a href="contact.html" class="nav-link">Contact</a></li>
                 <li class="nav-cta-container">
                     <a href="tel:+447594277052" class="nav-cta">
@@ -219,7 +279,7 @@
                 <!-- Images -->
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0000.jpg" data-lightbox="gallery" data-title="Plumbing Work Example">
-                        <img src="Gallary/IMG-20250922-WA0000.jpg" alt="Plumbing Work Example" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0000.jpg" alt="Plumbing Work Example" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -228,7 +288,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0001.jpg" data-lightbox="gallery" data-title="Gas Installation">
-                        <img src="Gallary/IMG-20250922-WA0001.jpg" alt="Gas Installation" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0001.jpg" alt="Gas Installation" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -237,7 +297,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0002.jpg" data-lightbox="gallery" data-title="Boiler Service">
-                        <img src="Gallary/IMG-20250922-WA0002.jpg" alt="Boiler Service" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0002.jpg" alt="Boiler Service" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -246,7 +306,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0003.jpg" data-lightbox="gallery" data-title="Bathroom Installation">
-                        <img src="Gallary/IMG-20250922-WA0003.jpg" alt="Bathroom Installation" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0003.jpg" alt="Bathroom Installation" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -255,7 +315,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0004.jpg" data-lightbox="gallery" data-title="Pipe Repair">
-                        <img src="Gallary/IMG-20250922-WA0004.jpg" alt="Pipe Repair" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0004.jpg" alt="Pipe Repair" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -264,7 +324,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0005.jpg" data-lightbox="gallery" data-title="Kitchen Plumbing">
-                        <img src="Gallary/IMG-20250922-WA0005.jpg" alt="Kitchen Plumbing" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0005.jpg" alt="Kitchen Plumbing" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -273,7 +333,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0006.jpg" data-lightbox="gallery" data-title="Heating System">
-                        <img src="Gallary/IMG-20250922-WA0006.jpg" alt="Heating System" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0006.jpg" alt="Heating System" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -282,7 +342,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0007.jpg" data-lightbox="gallery" data-title="Gas Safety Check">
-                        <img src="Gallary/IMG-20250922-WA0007.jpg" alt="Gas Safety Check" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0007.jpg" alt="Gas Safety Check" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -291,7 +351,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0008.jpg" data-lightbox="gallery" data-title="Plumbing Installation">
-                        <img src="Gallary/IMG-20250922-WA0008.jpg" alt="Plumbing Installation" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0008.jpg" alt="Plumbing Installation" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -300,7 +360,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0009.jpg" data-lightbox="gallery" data-title="Boiler Installation">
-                        <img src="Gallary/IMG-20250922-WA0009.jpg" alt="Boiler Installation" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0009.jpg" alt="Boiler Installation" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -309,7 +369,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0010.jpg" data-lightbox="gallery" data-title="Emergency Repair">
-                        <img src="Gallary/IMG-20250922-WA0010.jpg" alt="Emergency Repair" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0010.jpg" alt="Emergency Repair" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -318,7 +378,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0011.jpg" data-lightbox="gallery" data-title="Commercial Work">
-                        <img src="Gallary/IMG-20250922-WA0011.jpg" alt="Commercial Work" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0011.jpg" alt="Commercial Work" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -327,7 +387,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0012.jpg" data-lightbox="gallery" data-title="Residential Plumbing">
-                        <img src="Gallary/IMG-20250922-WA0012.jpg" alt="Residential Plumbing" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0012.jpg" alt="Residential Plumbing" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -336,7 +396,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0013.jpg" data-lightbox="gallery" data-title="Gas Fitting">
-                        <img src="Gallary/IMG-20250922-WA0013.jpg" alt="Gas Fitting" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0013.jpg" alt="Gas Fitting" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -345,7 +405,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0014.jpg" data-lightbox="gallery" data-title="Professional Installation">
-                        <img src="Gallary/IMG-20250922-WA0014.jpg" alt="Professional Installation" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0014.jpg" alt="Professional Installation" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -354,7 +414,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0015.jpg" data-lightbox="gallery" data-title="Quality Workmanship">
-                        <img src="Gallary/IMG-20250922-WA0015.jpg" alt="Quality Workmanship" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0015.jpg" alt="Quality Workmanship" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -363,7 +423,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0016.jpg" data-lightbox="gallery" data-title="Plumbing Solution">
-                        <img src="Gallary/IMG-20250922-WA0016.jpg" alt="Plumbing Solution" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0016.jpg" alt="Plumbing Solution" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -372,7 +432,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0019.jpg" data-lightbox="gallery" data-title="Expert Work">
-                        <img src="Gallary/IMG-20250922-WA0019.jpg" alt="Expert Work" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0019.jpg" alt="Expert Work" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -381,7 +441,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0020.jpg" data-lightbox="gallery" data-title="Professional Service">
-                        <img src="Gallary/IMG-20250922-WA0020.jpg" alt="Professional Service" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0020.jpg" alt="Professional Service" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -390,7 +450,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0021.jpg" data-lightbox="gallery" data-title="Gas Safe Work">
-                        <img src="Gallary/IMG-20250922-WA0021.jpg" alt="Gas Safe Work" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0021.jpg" alt="Gas Safe Work" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -399,7 +459,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0022.jpg" data-lightbox="gallery" data-title="Reliable Service">
-                        <img src="Gallary/IMG-20250922-WA0022.jpg" alt="Reliable Service" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0022.jpg" alt="Reliable Service" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -408,7 +468,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0023.jpg" data-lightbox="gallery" data-title="Staffordshire Plumber">
-                        <img src="Gallary/IMG-20250922-WA0023.jpg" alt="Staffordshire Plumber" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0023.jpg" alt="Staffordshire Plumber" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -417,7 +477,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0024.jpg" data-lightbox="gallery" data-title="Local Plumbing">
-                        <img src="Gallary/IMG-20250922-WA0024.jpg" alt="Local Plumbing" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0024.jpg" alt="Local Plumbing" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -426,7 +486,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0025.jpg" data-lightbox="gallery" data-title="Quality Installation">
-                        <img src="Gallary/IMG-20250922-WA0025.jpg" alt="Quality Installation" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0025.jpg" alt="Quality Installation" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -435,7 +495,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0026.jpg" data-lightbox="gallery" data-title="Professional Repair">
-                        <img src="Gallary/IMG-20250922-WA0026.jpg" alt="Professional Repair" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0026.jpg" alt="Professional Repair" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -444,7 +504,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0027.jpg" data-lightbox="gallery" data-title="Gas Installation Work">
-                        <img src="Gallary/IMG-20250922-WA0027.jpg" alt="Gas Installation Work" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0027.jpg" alt="Gas Installation Work" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -453,7 +513,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0028.jpg" data-lightbox="gallery" data-title="Plumbing Excellence">
-                        <img src="Gallary/IMG-20250922-WA0028.jpg" alt="Plumbing Excellence" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0028.jpg" alt="Plumbing Excellence" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -462,7 +522,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0029.jpg" data-lightbox="gallery" data-title="Expert Installation">
-                        <img src="Gallary/IMG-20250922-WA0029.jpg" alt="Expert Installation" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0029.jpg" alt="Expert Installation" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -471,7 +531,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0030.jpg" data-lightbox="gallery" data-title="Professional Standards">
-                        <img src="Gallary/IMG-20250922-WA0030.jpg" alt="Professional Standards" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0030.jpg" alt="Professional Standards" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -480,7 +540,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0031.jpg" data-lightbox="gallery" data-title="Quality Service">
-                        <img src="Gallary/IMG-20250922-WA0031.jpg" alt="Quality Service" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0031.jpg" alt="Quality Service" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -489,7 +549,7 @@
                 
                                 <div class="gallery-item" data-type="images">
                     <a href="Gallary/IMG-20250922-WA0032.jpg" data-lightbox="gallery" data-title="Trusted Plumber">
-                        <img src="Gallary/IMG-20250922-WA0032.jpg" alt="Trusted Plumber" loading="lazy">
+                        <img data-src="Gallary/IMG-20250922-WA0032.jpg" alt="Trusted Plumber" class="lazy-load loading">
                         <div class="gallery-overlay">
                             <i class="fas fa-expand"></i>
                         </div>
@@ -561,7 +621,7 @@
                     <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="services.html">Services</a></li>
-                        <li><a href="about.html">Gallery</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
@@ -624,6 +684,119 @@
     <script src="script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
     <script>
+        // Advanced Lazy Loading with Intersection Observer
+        class LazyImageLoader {
+            constructor() {
+                this.imageObserver = null;
+                this.loadedImages = new Set();
+                this.init();
+            }
+            
+            init() {
+                // Create intersection observer for better performance
+                if ('IntersectionObserver' in window) {
+                    this.imageObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                this.loadImage(entry.target);
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, {
+                        rootMargin: '50px 0px', // Start loading 50px before image comes into view
+                        threshold: 0.01
+                    });
+                    
+                    // Observe all lazy load images
+                    document.querySelectorAll('.lazy-load').forEach(img => {
+                        this.imageObserver.observe(img);
+                    });
+                } else {
+                    // Fallback for older browsers
+                    this.loadVisibleImages();
+                }
+                
+                // Load first few images immediately for better perceived performance
+                this.loadInitialImages();
+            }
+            
+            loadInitialImages() {
+                const initialImages = document.querySelectorAll('.lazy-load');
+                const loadCount = Math.min(6, initialImages.length); // Load first 6 images
+                
+                for (let i = 0; i < loadCount; i++) {
+                    const img = initialImages[i];
+                    if (img && img.dataset.src) {
+                        this.loadImage(img);
+                    }
+                }
+            }
+            
+            loadImage(img) {
+                if (this.loadedImages.has(img) || !img.dataset.src) return;
+                
+                this.loadedImages.add(img);
+                
+                // Create new image element to preload
+                const imageLoader = new Image();
+                
+                imageLoader.onload = () => {
+                    // Image loaded successfully
+                    img.src = img.dataset.src;
+                    img.classList.remove('loading');
+                    img.classList.add('loaded');
+                    
+                    // Add fade-in animation
+                    img.style.opacity = '0';
+                    img.style.transition = 'opacity 0.3s ease';
+                    setTimeout(() => {
+                        img.style.opacity = '1';
+                    }, 10);
+                };
+                
+                imageLoader.onerror = () => {
+                    // Handle image load error
+                    img.classList.remove('loading');
+                    img.classList.add('error');
+                    img.alt = 'Image failed to load';
+                    console.warn('Failed to load image:', img.dataset.src);
+                };
+                
+                // Start loading the image
+                imageLoader.src = img.dataset.src;
+            }
+            
+            loadVisibleImages() {
+                // Fallback method for browsers without IntersectionObserver
+                const images = document.querySelectorAll('.lazy-load');
+                images.forEach(img => {
+                    if (this.isInViewport(img)) {
+                        this.loadImage(img);
+                    }
+                });
+            }
+            
+            isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+            }
+        }
+        
+        // Initialize lazy loading when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = new LazyImageLoader();
+            window.lazyLoader = loader; // Make it globally accessible for debugging
+            
+            // Debug: Check if images are being found
+            const lazyImages = document.querySelectorAll('.lazy-load');
+            console.log(`Found ${lazyImages.length} lazy load images`);
+        });
+        
         // Filter functionality for gallery
         const filterButtons = document.querySelectorAll('.filter-btn');
         const galleryItems = document.querySelectorAll('.gallery-item');
@@ -638,6 +811,16 @@
                 galleryItems.forEach(item => {
                     if (filter === 'all' || item.getAttribute('data-type') === filter) {
                         item.style.display = 'block';
+                        
+                        // Load images that become visible after filtering
+                        const img = item.querySelector('.lazy-load');
+                        if (img && !img.src) {
+                            setTimeout(() => {
+                                if (window.lazyLoader) {
+                                    window.lazyLoader.loadImage(img);
+                                }
+                            }, 100);
+                        }
                     } else {
                         item.style.display = 'none';
                     }
@@ -645,20 +828,44 @@
             });
         });
         
-         // Configure Lightbox2
-         lightbox.option({
-             'resizeDuration': 200,
-             'wrapAround': true,
-             'showImageNumberLabel': false,
-             'alwaysShowNavOnTouchDevices': true,
-             'disableScrolling': false,
-             'fitImagesInViewport': true,
-             'maxWidth': '',
-             'maxHeight': '',
-             'positionFromTop': 50,
-             'showImageNumberLabel': true,
-             'albumLabel': "Image %1 of %2"
-         });
+        // Configure Lightbox2 for better mobile performance
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'showImageNumberLabel': false,
+            'alwaysShowNavOnTouchDevices': true,
+            'disableScrolling': false,
+            'fitImagesInViewport': true,
+            'maxWidth': '90%',
+            'maxHeight': '90%',
+            'positionFromTop': 50,
+            'showImageNumberLabel': true,
+            'albumLabel': "Image %1 of %2"
+        });
+        
+        // Optimize lightbox for mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            // Preload lightbox CSS and JS on user interaction
+            let lightboxPreloaded = false;
+            
+            function preloadLightbox() {
+                if (!lightboxPreloaded) {
+                    lightboxPreloaded = true;
+                    // Lightbox is already loaded, but we can optimize it for mobile
+                    if (window.innerWidth <= 768) {
+                        lightbox.option({
+                            'maxWidth': '95%',
+                            'maxHeight': '80%',
+                            'positionFromTop': 20
+                        });
+                    }
+                }
+            }
+            
+            // Preload on first touch/click
+            document.addEventListener('touchstart', preloadLightbox, { once: true });
+            document.addEventListener('click', preloadLightbox, { once: true });
+        });
     </script>
 </body>
 </html>
